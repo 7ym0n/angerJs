@@ -1,12 +1,43 @@
-angerJs扩展使用例子：
-	var jsonp = {"title":{"text":"\u6d3b\u8dc3\u7528\u6237\u6570"},"chartType":"line","categories":["2013-10-01","2013-10-02","2013-10-03","2013-10-04","2013-10-05","2013-10-06","2013-10-07","2013-10-08","2013-10-09","2013-10-10","2013-10-11","2013-10-12","2013-10-13","2013-10-14","2013-10-15","2013-10-16","2013-10-17","2013-10-18","2013-10-19","2013-10-20","2013-10-21","2013-10-22","2013-10-23","2013-10-24","2013-10-25","2013-10-26","2013-10-27","2013-10-28","2013-10-29","2013-10-30","2013-10-31"],"series":{"name":"\u7528\u6237\u6d3b\u8dc3\u6570","data":[{"name":"2013-10-01","y":237316},{"name":"2013-10-02","y":228828},{"name":"2013-10-03","y":227471},{"name":"2013-10-04","y":232859},{"name":"2013-10-05","y":243294},{"name":"2013-10-06","y":248085},{"name":"2013-10-07","y":253603},{"name":"2013-10-08","y":234261},{"name":"2013-10-09","y":234833},{"name":"2013-10-10","y":234158},{"name":"2013-10-11","y":236394},{"name":"2013-10-12","y":247837},{"name":"2013-10-13","y":254526},{"name":"2013-10-14","y":238063},{"name":"2013-10-15","y":236670},{"name":"2013-10-16","y":236077},{"name":"2013-10-17","y":239886},{"name":"2013-10-18","y":248729},{"name":"2013-10-19","y":257626},{"name":"2013-10-20","y":263728},{"name":"2013-10-21","y":237787},{"name":"2013-10-22","y":240148},{"name":"2013-10-23","y":239911},{"name":"2013-10-24","y":117018},{"name":"2013-10-25","y":247740},{"name":"2013-10-26","y":259403},{"name":"2013-10-27","y":258649},{"name":"2013-10-28","y":244135},{"name":"2013-10-29","y":239561},{"name":"2013-10-30","y":240033},{"name":"2013-10-31","y":241520}]},"enableLegend":"","chartOptions":{"title":""},"isCompareSeries":0,"xAxisLabelStep":0};
+***angerJs扩展使用例子：
+	var jsonp = {"title":{"text":"\u6d3b\u8dc3\u7528\u6237\u6570"},
+	"chartType":"line",
+	"categories":[
+		"2013-10-01",
+		"2013-10-02",
+		"2013-10-03",
+		"2013-10-04",
+		"2013-10-05",
+		"2013-10-06",
+		"2013-10-07",
+		"2013-10-08",
+		"2013-10-09",
+		"2013-10-10"
+		],
+	"series":{
+		"name":"\u7528\u6237\u6d3b\u8dc3\u6570",
+		"data":[
+			{"name":"2013-10-01","y":237316},
+			{"name":"2013-10-02","y":228828},
+			{"name":"2013-10-03","y":227471},
+			{"name":"2013-10-04","y":232859},
+			{"name":"2013-10-05","y":243294},
+			{"name":"2013-10-06","y":248085},
+			{"name":"2013-10-07","y":253603},
+			{"name":"2013-10-08","y":234261},
+			{"name":"2013-10-09","y":234833},
+			{"name":"2013-10-10","y":234158}
+		]},
+	"enableLegend":"",
+	"chartOptions":{"title":""},
+	"isCompareSeries":0,
+	"xAxisLabelStep":0};
 
 	$("#container").createAngerJsChart(jsonp);
 
-主要对HighCharts做通用配置设置的扩展
+###主要对HighCharts做通用配置设置的扩展
 
-根据自己指定的图表类型生成对应的图表。
-
+###根据自己指定的图表类型生成对应的图表。
+```PHP
 createChart(params)函数参数接受的数据格式:
 {
 	title:{text:""},
@@ -18,3 +49,66 @@ createChart(params)函数参数接受的数据格式:
 	isCompareSeries:0,
 	xAxisLabelStep:1
 }
+```
+###使用raphael库，画中国地图。
+```php
+	var mapJson = {
+	    "area_map":{
+		"anhui":{"value":"7474","color":"#9cd9af"},
+		"macau":{"value":"117","color":"#9cd9af"},
+		"beijing":{"value":"24164","color":"#7fd097"},
+		"chongqing":{"value":"5656","color":"#9cd9af"},
+		"fujian":{"value":"17619","color":"#9cd9af"},
+		"gansu":{"value":"4709","color":"#9cd9af"},
+		"guangdong":{"value":"71158","color":"#229342"},
+		"guangxi":{"value":"6621","color":"#9cd9af"},
+		"guizhou":{"value":"2030","color":"#9cd9af"},
+		"hainan":{"value":"2251","color":"#9cd9af"},
+		"hebei":{"value":"13956","color":"#9cd9af"},
+		"henan":{"value":"17598","color":"#9cd9af"},
+		"heilongjiang":{"value":"11422","color":"#9cd9af"},
+		"hubei":{"value":"20114","color":"#7fd097"},
+		"hunan":{"value":"13906","color":"#9cd9af"},
+		"jiangsu":{"value":"23173","color":"#7fd097"},
+		"jiangxi":{"value":"7731","color":"#9cd9af"},
+		"jilin":{"value":"8683","color":"#9cd9af"},
+		"liaoning":{"value":"12795","color":"#9cd9af"},
+		"neimongol":{"value":"4481","color":"#9cd9af"},
+		"ningxia":{"value":"1274","color":"#9cd9af"},
+		"qinghai":{"value":"1032","color":"#9cd9af"},
+		"shanghai":{"value":"10721","color":"#9cd9af"},
+		"shandong":{"value":"15317","color":"#9cd9af"},
+		"shanxi":{"value":"7329","color":"#9cd9af"},
+		"shaanxi":{"value":"12062","color":"#9cd9af"},
+		"sichuan":{"value":"12592","color":"#9cd9af"},
+		"tianjin":{"value":"8414","color":"#9cd9af"},
+		"taiwan":{"value":"255","color":"#9cd9af"},
+		"xizang":{"value":"100","color":"#9cd9af"},
+		"xinjiang":{"value":"2522","color":"#9cd9af"},
+		"hongkong":{"value":"1114","color":"#9cd9af"},
+		"yunnan":{"value":"5080","color":"#9cd9af"},
+		"zhejiang":{"value":"18100","color":"#7fd097"}}};
+			
+		$("#div_map").createMap({
+                        data : mapJson.area_map, //初始化的数据
+                        width: 800, //宽
+                        height: 600, //高
+                        backgroudColor: '#AAD5FF', //默认背景色
+                        hoverColor: '#5d9cec', //默认选中色
+                        strokeWidth: 1, //边界粗细
+                        strokeColor: '#F9FCFE',//边界颜色
+                        hoverCallback: function(areaObj, event){
+                        	       $('#_tool_tips').remove();
+					var evt = window.event || event;
+                        		var x = (evt.pageX || evt.clientX+document.body.scrollLeft+document.documentElement.scrollLeft) + 10;
+                        		var y = (evt.pageY || evt.clientY+document.body.scrollTop+document.documentElement.scrollTop) + 10;
+                        		var tipsIner=['<div id="_tool_tips" class="tips-small"> ',
+            		    		    	    '<p>'+areaObj.name+':'+ ($.formatLint(areaObj.value)||0)+'</p>',
+            		   			    '</div>'];
+                        		$('body').append(tipsIner.join(''));
+                        		$('#_tool_tips').show().css({top:y, left:x});
+                        }
+                });
+		
+		$.fn.createMap({}) //函数接受一个对象，如果对象为空则使用默认的配置。
+```
