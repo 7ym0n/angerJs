@@ -1,5 +1,4 @@
-//var CDA = function(){};
-var angerJs = {
+var angerJsChart = {
 	//默认配置
 	defaults : {
             title: '',                              //图表标题,备用
@@ -8,12 +7,13 @@ var angerJs = {
             showLabel: true,                        //是否显示标签
             showMarker: true,                       //是否显示点
             chartType: 'area',                      //图表类型
-			//数据类型，1：整数，2：浮点数  3：百分比，仅在后面追加百分号  4：时间格式 HH:MM:SS	5：百分比，显示时会乘上100  6：不处理，保留原有格式 7: 当是整数时 format为整数，小数就显示浮点 modified by dorsywang
-			dataFormat: 6,							
+	    //数据类型，1：整数，2：浮点数  3：百分比，仅在后面追加百分号  4：时间格式 HH:MM:SS	5：百分比，显示时会乘上100  6：不处理，保留原有格式 7: 当是整数时 format为整数，小数就显示浮点 modified by dorsywang
+	    dataFormat: 6,
+	    floatDecimal: 2,						//小数保留位数 
             labelFormat: 0,                         //指定标签显示的格式，0: 不显示，1: 显示Y值， 2：自动计算百分比并显示
             hasData : false,						//是否有数据
-			minY : 0, 								//标识Y坐标最小值
-			maxY : 0, 								//标识Y坐标最大
+	    minY : 0, 								//标识Y坐标最小值
+            maxY : 0, 								//标识Y坐标最大
             categories: [],                         //X轴数据
             series:[],                              //Y轴数列
             yMin: null,                             //Y轴最小值
@@ -30,9 +30,9 @@ var angerJs = {
             maxYAxisIntervalCount: 3,               //Y轴最大刻度数 
             theme: '',                              //图表样式主题
             setNoDataCss: 'nodata',                    //无数据时样式名
-            setNodateText: '为获取到数据',
+            setNodateText: '未获取到数据',
             isCompareSeries: false,                 //判断两个数列是否为对比数列
-			autoxAxisDataType: false,				//是否自动识别X轴数据类型，比如日期类型，以别进行相关个性化设置
+	    autoxAxisDataType: false,				//是否自动识别X轴数据类型，比如日期类型，以别进行相关个性化设置
             chartOptions:{                          //hichCharts的配置
                 chart: {},
                 title: {},
@@ -327,15 +327,16 @@ var angerJs = {
      //格式化数据
      formatValue : function(dataFormat, value){
     	dataFormat = parseInt(dataFormat);
+
     	switch(dataFormat){
         case 1:
             value =  Highcharts.numberFormat(value, 0);
             break;
         case 2:
-            value =  Highcharts.numberFormat(value, 2);
+            value =  Highcharts.numberFormat(value, this.defaults.floatDecimal);
             break;
         case 3:
-            value =  Highcharts.numberFormat(value, 2);
+            value =  Highcharts.numberFormat(value, this.defaults.floatDecimal);
             break;
         case 4:
             var toTimeDesc = function(t){
@@ -351,14 +352,14 @@ var angerJs = {
             value = toTimeDesc(value);						//处理时间格式为时分秒格式H:mm:ss
             break;
         case 5:
-            value =  Highcharts.numberFormat(value * 100, 2);
+            value =  Highcharts.numberFormat(value * 100, this.defaults.floatDecimal);
             break;
 
         case 7:
             if(value >= 1 || value <= -1){
                 value = Highcharts.numberFormat(value, 0);
             }else{
-                value = Highcharts.numberFormat(value, 2);
+                value = Highcharts.numberFormat(value, this.defaults.floatDecimal);
             }
     	}
     	return value;
@@ -501,9 +502,10 @@ var angerJs = {
 		if (mainYAxis.dataFormat == 3){
 			c._chartOptions.tooltip.valueSuffix = '%';
 		}
+
 		if (c._chartOptions.tooltip.valueSuffix){
 			mainYAxis.labels.formatter = function(){
-				var value = (mainYAxis.dataFormat == 5)?  Highcharts.numberFormat(this.value * 100, 0) : this.value;
+				var value = (mainYAxis.dataFormat == 5)?  Highcharts.numberFormat(this.value * 100, options.floatDecimal) : this.value;
 				return value + c._chartOptions.tooltip.valueSuffix;
 			};
 		}
@@ -519,7 +521,7 @@ var angerJs = {
 		}else{
 			c._chartOptions.plotOptions.series.dataLabels.enabled = true;
 			c._chartOptions.plotOptions.series.dataLabels.formatter = c._chartOptions.plotOptions.series.dataLabels.formatter || function(){
-				return c.formatValue(mainYAxis.dataFormat, this.y);
+				return c.formatValue(mainYAxis.dataFormat, options.floatDecimal);
 			}		
 		}
 		switch(options.labelFormat){
@@ -528,12 +530,12 @@ var angerJs = {
 				break;
 			case 1:
 				c._chartOptions.plotOptions.series.dataLabels.formatter = c._chartOptions.plotOptions.series.dataLabels.formatter || function(){
-					return c.formatValue(mainYAxis.dataFormat, this.y);
+					return c.formatValue(mainYAxis.dataFormat, options.floatDecimal);
 				}
 				break;
 			case 2:
 				c._chartOptions.plotOptions.series.dataLabels.formatter = c._chartOptions.plotOptions.series.dataLabels.formatter || function(){
-					return Highcharts.numberFormat(this.percentage, 2) + '%';
+					return Highcharts.numberFormat(this.percentage, options.floatDecimal) + '%';
 				}
 			break;
 		default:
@@ -586,51 +588,51 @@ var angerJs = {
 }
 ;(function ($) {
         $.fn.loadChart = function (cgi,postData,opts){
-                var containerId	= $(this);
-		$("#progressBar").show(200);
-		$.ajax({	
-			type: "POST",
-	  		url: cgi,
-	  		data: postData,
-	    		dataType: "json",
-	    		success: function(msg){
-				$("#progressBar").hide(200);
-				$(this).empty();
-			
-				var options = {};
-				if(typeof(msg.chartOptions) != 'undefined' && msg.chartOptions != '' && msg.chartOptions != null) {
-					options = {
-						chartOptions : msg.chartOptions
+        	var containerId	= $(this);
+			$("#progressBar").show(200);
+			$.ajax({	
+				type: "POST",
+		  		url: cgi,
+		  		data: postData,
+		    		dataType: "json",
+		    		success: function(msg){
+					$("#progressBar").hide(200);
+					$(this).empty();
+				
+					var options = {};
+					if(typeof(msg.chartOptions) != 'undefined' && msg.chartOptions != '' && msg.chartOptions != null) {
+						options = {
+							chartOptions : msg.chartOptions
+						};
+					}
+				
+					if(typeof(msg.enableLegend) != 'undefined' && msg.enableLegend != '' && msg.enableLegend != null) {
+	
+						options['enableLegend'] = msg.enableLegend;
+					}
+					options = $.extend(true, options, opts);
+					//如果自定义了使用自定义的title否则
+					if(typeof(opts) == 'object'){
+						var title = opts.title =='' ?  msg.title : opts.title;
+					}else{
+						var title = msg.title;
+					}
+					options.title = {text : title, useHTML : true};
+					var _opt = {
+							chartType : msg.chartType || 'line',
+							categories : msg.categories,
+							series : msg.series,
+							title : msg.title,
+				        isCompareSeries:msg.isCompareSeries,
+							dataFormat: msg.dataFormat || '1'
 					};
-				}
-			
-				if(typeof(msg.enableLegend) != 'undefined' && msg.enableLegend != '' && msg.enableLegend != null) {
-
-					options['enableLegend'] = msg.enableLegend;
-				}
-				options = $.extend(true, options, opts);
-				//如果自定义了使用自定义的title否则
-				if(typeof(opts) == 'object'){
-					var title = opts.title =='' ?  msg.title : opts.title;
-				}else{
-					var title = msg.title;
-				}
-				options.title = {text : title, useHTML : true};
-				var _opt = {
-						chartType : msg.chartType || 'line',
-						categories : msg.categories,
-						series : msg.series,
-						title : msg.title,
-			        isCompareSeries:msg.isCompareSeries,
-						dataFormat: msg.dataFormat || '1'
-				};
-				_opt = $.extend(true, _opt, options);
-				angerJs.createChart(containerId	,_opt);
-		    	}
-	  	});
+					_opt = $.extend(true, _opt, options);
+					angerJsChart.createChart(containerId,_opt);
+			    	}
+		  	});
 	};
 	$.fn.createAngerJsChart = function (opts){
-		angerJs.createChart($(this),opts);
+		angerJsChart.createChart($(this),opts);
 		
 	};
 })(jQuery);
