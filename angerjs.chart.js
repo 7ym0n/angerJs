@@ -586,6 +586,7 @@ var angerJs = {
 }
 ;(function ($) {
         $.fn.loadChart = function (cgi,postData,opts){
+                var containerId	= $(this);
 		$("#progressBar").show(200);
 		$.ajax({	
 			type: "POST",
@@ -624,7 +625,7 @@ var angerJs = {
 						dataFormat: msg.dataFormat || '1'
 				};
 				_opt = $.extend(true, _opt, options);
-				angerJs.createChart($(this),_opt);
+				angerJs.createChart(containerId	,_opt);
 		    	}
 	  	});
 	};
