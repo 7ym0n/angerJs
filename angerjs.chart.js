@@ -389,6 +389,7 @@ var angerJsChart = {
     createChart : function (containerId,options) {
 		var c = this;
 		//合并数据和配置选项
+		c.defaults.series = [];//合并前要清空数据,否则画多个图的时候会有脏数据
 		options = $.extend(true, c.defaults, options);
 		//设置图表样式主题
 		c.setChartTheme(options.theme);
