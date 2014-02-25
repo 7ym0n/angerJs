@@ -85,9 +85,8 @@ var angerJsTable = {
 			for (var property in source) {
 				destination[property] = source[property];
 			}
-			
-			return destination;
 		}
+		return destination;
 	},
 	initData : function(opt){
 
