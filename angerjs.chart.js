@@ -7,7 +7,15 @@ var angerJsChart = {
             showLabel: true,                        //是否显示标签
             showMarker: true,                       //是否显示点
             chartType: 'area',                      //图表类型
-	    //数据类型，1：整数，2：浮点数  3：百分比，仅在后面追加百分号  4：时间格式 HH:MM:SS	5：百分比，显示时会乘上100  6：不处理，保留原有格式 7: 当是整数时 format为整数，小数就显示浮点 modified by dorsywang
+	    /**数据类型，
+	     * 1：整数，
+	     * 2：浮点数  
+	     * 3：百分比，仅在后面追加百分号  
+	     * 4：时间格式 HH:MM:SS
+	     * 5：百分比，显示时会乘上100 
+	     * 6：不处理，保留原有格式 
+	     * 7: 当是整数时 format为整数，小数就显示浮点
+	     */
 	    dataFormat: 6,
 	    floatDecimal: 2,						//小数保留位数 
             labelFormat: 0,                         //指定标签显示的格式，0: 不显示，1: 显示Y值， 2：自动计算百分比并显示
