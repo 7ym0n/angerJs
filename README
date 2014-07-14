@@ -112,3 +112,17 @@ createChart(params)函数参数接受的数据格式:
 		
 		$.fn.createMap({}) //函数接受一个对象，如果对象为空则使用默认的配置。
 ```
+***
+注意：
+	//pie图表的时候想要显示Y轴的数据，也就是默认的连接线，需要加上以下的参数。
+	labelFormat:1,
+	chartOptions:{
+		plotOptions: {
+			pie: {
+				dataLabels: {
+					format:'<b>{point.name}</b>: {point.percentage:.1f} %'
+				}
+			}
+		}
+	}
+***
